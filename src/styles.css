@@ -102,22 +102,22 @@ a {
 
 .logo-initial {
   position: absolute;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   line-height: 1;
 }
 
 .logo-mark-large .logo-initial {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .logo-b {
-  left: 27%;
+  left: 20%;
   top: 23%;
 }
 
 .logo-m {
   bottom: 21%;
-  right: 21%;
+  right: 13%;
 }
 
 .logo-slash {
@@ -307,25 +307,35 @@ h3 {
 .hero-art {
   position: relative;
   display: grid;
-  min-height: 520px;
   overflow: hidden;
+  background: transparent;
+  align-self: start;
+  margin-top: 60px;
+}
+
+.hero-art img {
+  position: relative;
+  z-index: 1;
+  grid-column: 1 / -1;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center center;
+  max-width: 100%;
+  align-self: center;
+  justify-self: center;
+  display: block;
+}
+
+.hero-art img {
+  /* framed image: move the border, radius and shadow to the image itself */
   border: 8px solid var(--forest);
   border-radius: var(--radius);
-  background: var(--white);
   box-shadow: var(--shadow);
-  grid-template-columns: 1fr 1fr;
 }
 
 .hero-art::before {
-  position: absolute;
-  top: -12%;
-  bottom: -12%;
-  left: 45%;
-  width: 24%;
-  border-radius: 50%;
-  background: var(--leaf);
-  content: "";
-  transform: rotate(8deg);
+  display: none;
 }
 
 .art-panel {
