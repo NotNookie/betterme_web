@@ -7,8 +7,8 @@ export function ProductGrid({ products }) {
       <div className="container">
         <SectionHeading
           eyebrow="Digital shop"
-          title="Real products from the Raket shop"
-          text="Each product card links directly to the matching Better Me Digitals product page on Raket for checkout and delivery."
+          title="Digital products ready for checkout"
+          text="Choose a product, enter your delivery email, and complete payment securely through PayMongo."
         />
 
         <div className="products-grid">

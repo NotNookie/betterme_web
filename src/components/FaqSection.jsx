@@ -4,7 +4,7 @@ const faqs = [
   {
     question: "How do customers receive their order?",
     answer:
-      "Purchases are handled through Raket. After checkout, customers can access the digital product details provided there.",
+      "After PayMongo confirms payment, customers receive access through the success page and delivery email.",
   },
   {
     question: "Do Canva products need an account?",

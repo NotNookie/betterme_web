@@ -1,4 +1,3 @@
-import { brand } from "../data/brand.js";
 import { ButtonLink } from "./ButtonLink.jsx";
 
 export function ShopBanner() {
@@ -7,10 +6,10 @@ export function ShopBanner() {
       <div className="container shop-banner-inner">
         <div>
           <p className="eyebrow">Available now</p>
-          <h2>Visit the Better Me Digitals shop.</h2>
+          <h2>Choose a Better Me Digitals product.</h2>
         </div>
-        <ButtonLink href={brand.shopUrl} variant="light">
-          Open Raket shop
+        <ButtonLink href="#products" variant="light">
+          Browse products
         </ButtonLink>
       </div>
     </section>

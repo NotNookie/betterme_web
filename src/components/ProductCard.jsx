@@ -1,4 +1,4 @@
-import { ButtonLink } from "./ButtonLink.jsx";
+import { CheckoutButton } from "./CheckoutButton.jsx";
 
 export function ProductCard({ product }) {
   return (
@@ -13,9 +13,7 @@ export function ProductCard({ product }) {
       </div>
       <h3>{product.title}</h3>
       <p>{product.description}</p>
-      <ButtonLink href={product.url} variant="primary" className="product-button">
-        Buy on Raket
-      </ButtonLink>
+      <CheckoutButton product={product} />
     </article>
   );
 }

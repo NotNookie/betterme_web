@@ -4,12 +4,12 @@ const steps = [
   {
     number: "01",
     title: "Choose a product",
-    text: "Browse the Raket shop and pick the printable or Canva template that fits the moment.",
+    text: "Pick the printable or Canva template that fits the moment.",
   },
   {
     number: "02",
     title: "Checkout securely",
-    text: "Raket handles the storefront and purchase flow so buyers do not need a custom account here.",
+    text: "PayMongo hosts the secure payment step, so buyers do not need a custom account here.",
   },
   {
     number: "03",
@@ -25,7 +25,7 @@ export function ProcessSection() {
         <SectionHeading
           eyebrow="How it works"
           title="A simple digital buying flow"
-          text="The website introduces the brand, then sends customers to the existing Raket checkout for payment and delivery."
+          text="The website collects the delivery email, opens PayMongo checkout, and releases the digital product after payment."
         />
 
         <div className="steps-grid">
