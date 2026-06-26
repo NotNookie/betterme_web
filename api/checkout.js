@@ -77,6 +77,10 @@ export default async function handler(req, res) {
             success_url: `${siteUrl}/checkout/success?reference=${encodeURIComponent(referenceNumber)}`,
             cancel_url: `${siteUrl}/#products`,
             reference_number: referenceNumber,
+            metadata: {
+              reference_number: referenceNumber,
+              product_id: getProductId(product),
+            },
           },
         },
       }),

@@ -7,33 +7,45 @@ import {
   supabaseRequest,
 } from "./_utils.js";
 
-function getSignatureValue(header) {
+function getSignatureParts(header) {
   if (!header) {
-    return null;
+    return {};
   }
 
-  const v1 = String(header)
+  return String(header)
     .split(",")
     .map((part) => part.trim())
-    .find((part) => part.startsWith("v1="));
-
-  return v1 ? v1.slice(3) : String(header).trim();
+    .reduce((parts, part) => {
+      const [key, value] = part.split("=");
+      if (key) {
+        parts[key] = value || "";
+      }
+      return parts;
+    }, {});
 }
 
-function verifySignature(rawBody, signatureHeader) {
+function verifySignature(rawBody, signatureHeader, livemode) {
   const secret = process.env.PAYMONGO_WEBHOOK_SECRET;
 
   if (!secret) {
     return false;
   }
 
-  const receivedSignature = getSignatureValue(signatureHeader);
-  const expectedSignature = crypto.createHmac("sha256", secret).update(rawBody).digest("hex");
+  const signatureParts = getSignatureParts(signatureHeader);
+  const timestamp = signatureParts.t;
+  const receivedSignature = livemode ? signatureParts.li : signatureParts.te;
 
-  if (!receivedSignature) {
+  if (!timestamp || !receivedSignature) {
     return false;
   }
 
+  const timestampAgeMs = Math.abs(Date.now() - Number(timestamp) * 1000);
+  if (!Number.isFinite(timestampAgeMs) || timestampAgeMs > 10 * 60 * 1000) {
+    return false;
+  }
+
+  const signedPayload = `${timestamp}.${rawBody.toString("utf8")}`;
+  const expectedSignature = crypto.createHmac("sha256", secret).update(signedPayload).digest("hex");
   const received = Buffer.from(receivedSignature, "hex");
   const expected = Buffer.from(expectedSignature, "hex");
 
@@ -46,19 +58,20 @@ export default async function handler(req, res) {
     return;
   }
 
-  const rawBody = await readRawBody(req);
-
-  if (!verifySignature(rawBody, req.headers["paymongo-signature"])) {
-    sendJson(res, 401, { error: "Invalid signature." });
-    return;
-  }
-
   try {
+    const rawBody = await readRawBody(req);
     const payload = JSON.parse(rawBody.toString("utf8"));
     const event = payload.data;
     const eventId = event?.id;
+    const eventType = event?.attributes?.type;
+    const livemode = Boolean(event?.attributes?.livemode);
 
-    if (event?.type !== "checkout_session.payment.paid") {
+    if (!verifySignature(rawBody, req.headers["paymongo-signature"], livemode)) {
+      sendJson(res, 401, { error: "Invalid signature." });
+      return;
+    }
+
+    if (eventType !== "checkout_session.payment.paid") {
       sendJson(res, 200, { received: true });
       return;
     }
@@ -70,7 +83,7 @@ export default async function handler(req, res) {
           headers: { Prefer: "return=minimal" },
           body: JSON.stringify({
             event_id: eventId,
-            event_type: event.type,
+            event_type: eventType,
             payload,
           }),
         });
@@ -84,8 +97,15 @@ export default async function handler(req, res) {
       }
     }
 
-    const session = event.data;
-    const referenceNumber = session?.attributes?.reference_number;
+    const session = event.attributes?.data;
+    const sessionAttributes = session?.attributes || {};
+    const payment = sessionAttributes.payments?.[0];
+    const paymentAttributes = payment?.attributes || {};
+    const referenceNumber =
+      sessionAttributes.reference_number ||
+      paymentAttributes.external_reference_number ||
+      sessionAttributes.metadata?.reference_number ||
+      paymentAttributes.metadata?.reference_number;
 
     if (!referenceNumber) {
       sendJson(res, 200, { received: true });
