@@ -68,7 +68,7 @@ export function CheckoutSuccess() {
                   <strong>{order.status}</strong>.
                 </p>
                 {order.downloadUrl ? (
-                  <a className="button button-primary" href={order.downloadUrl}>
+                  <a className="button button-primary" href={order.downloadUrl} target="_blank" rel="noreferrer">
                     <span>Open download</span>
                     <span className="button-arrow" aria-hidden="true">
                       -&gt;

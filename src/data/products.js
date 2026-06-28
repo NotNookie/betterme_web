@@ -1,7 +1,7 @@
 export const products = [
   {
     title: "Mood Tracker",
-    price: "â‚±139",
+    price: "PHP 139",
     category: "Planner",
     description: "A simple digital tracker for checking in with moods and daily patterns.",
     image: "https://raketcontent.com/small_EBOOK_BUNDLE_5_61bcca407d.png",
@@ -9,7 +9,7 @@ export const products = [
   },
   {
     title: "Done-For-You Digital Marketing Blueprint Guide w/ Master Resell Rights",
-    price: "â‚±599",
+    price: "PHP 599",
     category: "Business guide",
     description: "A ready digital marketing guide package for learning, selling, and reselling.",
     image: "https://raketcontent.com/small_Cover_Photos_4_f7df0ef817.png",
@@ -17,7 +17,7 @@ export const products = [
   },
   {
     title: "Canva Course Guide 101 w/ Freebies",
-    price: "â‚±499",
+    price: "PHP 499",
     category: "Canva guide",
     description: "A Canva learning guide bundled with extra digital resources.",
     image: "https://raketcontent.com/small_Cover_Photos_2_7d64ee3ee9.png",
@@ -25,7 +25,7 @@ export const products = [
   },
   {
     title: "Bookmarks",
-    price: "â‚±100",
+    price: "PHP 100",
     category: "Printable",
     description: "Printable bookmark designs for reading gifts, bundles, and small stationery sets.",
     image: "https://raketcontent.com/small_BIRTHDAY_BAG_CHI_Ps_4_4180ee9faf.png",
@@ -33,7 +33,7 @@ export const products = [
   },
   {
     title: "Business Planner (Canva Pro)",
-    price: "â‚±149",
+    price: "PHP 149",
     category: "Canva template",
     description: "An editable business planner template intended for Canva Pro users.",
     image: "https://raketcontent.com/small_BIRTHDAY_BAG_CHI_Ps_3_959065674d.png",
@@ -41,7 +41,7 @@ export const products = [
   },
   {
     title: "Thank You Cards",
-    price: "â‚±129",
+    price: "PHP 129",
     category: "Printable",
     description: "Thank-you card templates for packaging, customer notes, and small business use.",
     image: "https://raketcontent.com/small_BIRTHDAY_BAG_CHI_Ps_2_a28ac2a844.png",
@@ -49,7 +49,7 @@ export const products = [
   },
   {
     title: "Busy Book Tracing for Kids",
-    price: "â‚±100",
+    price: "PHP 100",
     category: "Kids activity",
     description: "Tracing activities for young learners and printable practice routines.",
     image: "https://raketcontent.com/small_Cover_Photos_6_a78cd11b63.png",
@@ -57,7 +57,7 @@ export const products = [
   },
   {
     title: "Princess Busy Book",
-    price: "â‚±100",
+    price: "PHP 100",
     category: "Kids activity",
     description: "A princess-themed busy book for playful learning and printable activities.",
     image: "https://raketcontent.com/small_princess_65c5d528d3.png",
@@ -65,7 +65,7 @@ export const products = [
   },
   {
     title: "Construction Busy Book",
-    price: "â‚±100",
+    price: "PHP 100",
     category: "Kids activity",
     description: "A construction-themed busy book for hands-on children's activities.",
     image: "https://raketcontent.com/small_construction_a53c42e916.png",
@@ -73,7 +73,7 @@ export const products = [
   },
   {
     title: "Mermaid Busy Book",
-    price: "â‚±100",
+    price: "PHP 100",
     category: "Kids activity",
     description: "A mermaid-themed activity book for printable play and learning.",
     image: "https://raketcontent.com/small_mermaid_e131b53621.png",
@@ -81,7 +81,7 @@ export const products = [
   },
   {
     title: "iRobot Busy Book",
-    price: "â‚±100",
+    price: "PHP 100",
     category: "Kids activity",
     description: "A robot-themed busy book with printable pages for curious young learners.",
     image: "https://raketcontent.com/small_i_Robot_7b7e7cc0cb.png",
@@ -89,7 +89,7 @@ export const products = [
   },
   {
     title: "Animal Busy Book",
-    price: "â‚±100",
+    price: "PHP 100",
     category: "Kids activity",
     description: "An animal-themed busy book for printable learning and activity time.",
     image: "https://raketcontent.com/small_animal_f734470300.png",
@@ -97,7 +97,7 @@ export const products = [
   },
   {
     title: "Self-care Planner",
-    price: "â‚±149",
+    price: "PHP 149",
     category: "Planner",
     description: "A self-care planner for reflections, routines, and mindful organization.",
     image: "https://raketcontent.com/small_BIRTHDAY_BAG_CHI_Ps_ac4024b7de.png",
@@ -105,7 +105,7 @@ export const products = [
   },
   {
     title: "Name Tracing Pad",
-    price: "â‚±129",
+    price: "PHP 129",
     category: "Kids activity",
     description: "A name tracing pad for handwriting practice and early learning routines.",
     image: "https://raketcontent.com/small_Cover_Photos_7_c8dc7c5796.png",
@@ -113,7 +113,7 @@ export const products = [
   },
   {
     title: "Birthday Bag Chips (Template)",
-    price: "â‚±129",
+    price: "PHP 129",
     category: "Canva template",
     description: "A birthday chip bag template for party favors and custom event packaging.",
     image: "https://raketcontent.com/small_BIRTHDAY_BAG_CHI_Ps_1_220b62ff32.png",
@@ -121,7 +121,7 @@ export const products = [
   },
   {
     title: "Cocomelon Coloring Book",
-    price: "â‚±100",
+    price: "PHP 100",
     category: "Coloring book",
     description: "A coloring book product for playful printable coloring sessions.",
     image: "https://raketcontent.com/small_THUMBNAILS_73d3458f3c.png",
