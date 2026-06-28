@@ -5,6 +5,7 @@ import {
   getProductAmount,
   getProductId,
   getSiteUrl,
+  hashAccessToken,
   isValidEmail,
   readJson,
   sendJson,
@@ -18,7 +19,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { productId, email } = await readJson(req);
+    const { productId, email, accessToken } = await readJson(req);
     const customerEmail = String(email || "").trim().toLowerCase();
     const product = findProduct(productId);
 
@@ -40,6 +41,7 @@ export default async function handler(req, res) {
     const referenceNumber = createReferenceNumber();
     const amount = getProductAmount(product);
     const siteUrl = getSiteUrl(req);
+    const accessTokenHash = hashAccessToken(accessToken);
 
     await supabaseRequest("orders", {
       method: "POST",
@@ -52,6 +54,7 @@ export default async function handler(req, res) {
         amount,
         currency: "PHP",
         status: "pending",
+        access_token_hash: accessTokenHash,
       }),
     });
 

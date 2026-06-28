@@ -14,6 +14,10 @@ export function CheckoutSuccess() {
       return;
     }
 
+    if (window.location.hash) {
+      window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+    }
+
     let isMounted = true;
     let attempts = 0;
 
@@ -21,7 +25,10 @@ export function CheckoutSuccess() {
       attempts += 1;
 
       try {
-        const response = await fetch(`/api/order?reference=${encodeURIComponent(reference)}`);
+        const accessToken = window.sessionStorage.getItem(`checkout-access:${reference}`) || "";
+        const response = await fetch(`/api/order?reference=${encodeURIComponent(reference)}`, {
+          headers: { "X-Checkout-Access-Token": accessToken },
+        });
         const json = await response.json();
 
         if (!response.ok) {
@@ -75,7 +82,11 @@ export function CheckoutSuccess() {
                     </span>
                   </a>
                 ) : (
-                  <p>Your download link will appear here after PayMongo confirms payment.</p>
+                  <p>
+                    {order.needsOriginalBrowser
+                      ? "For security, open this order from the browser used at checkout to view the download."
+                      : "Your download link will appear here after PayMongo confirms payment."}
+                  </p>
                 )}
               </>
             ) : null}

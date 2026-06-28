@@ -73,6 +73,14 @@ export function createReferenceNumber() {
   return `BMD-${Date.now()}-${random}`;
 }
 
+export function hashAccessToken(token) {
+  if (!token) {
+    return null;
+  }
+
+  return crypto.createHash("sha256").update(String(token)).digest("hex");
+}
+
 export function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }

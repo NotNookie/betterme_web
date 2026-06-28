@@ -1,4 +1,4 @@
-import { sendJson, supabaseRequest } from "./_utils.js";
+import { hashAccessToken, sendJson, supabaseRequest } from "./_utils.js";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -9,6 +9,7 @@ export default async function handler(req, res) {
   try {
     const url = new URL(req.url, `https://${req.headers.host}`);
     const reference = url.searchParams.get("reference");
+    const accessToken = req.headers["x-checkout-access-token"];
 
     if (!reference) {
       sendJson(res, 400, { error: "Missing order reference." });
@@ -16,7 +17,7 @@ export default async function handler(req, res) {
     }
 
     const orders = await supabaseRequest(
-      `orders?reference_number=eq.${encodeURIComponent(reference)}&select=reference_number,product_title,status,download_url`
+      `orders?reference_number=eq.${encodeURIComponent(reference)}&select=reference_number,product_title,status,download_url,access_token_hash`
     );
     const order = orders?.[0];
 
@@ -25,11 +26,17 @@ export default async function handler(req, res) {
       return;
     }
 
+    const canShowDownload =
+      order.status === "paid" &&
+      order.access_token_hash &&
+      hashAccessToken(accessToken) === order.access_token_hash;
+
     sendJson(res, 200, {
       referenceNumber: order.reference_number,
       productTitle: order.product_title,
       status: order.status,
-      downloadUrl: order.status === "paid" ? order.download_url : null,
+      downloadUrl: canShowDownload ? order.download_url : null,
+      needsOriginalBrowser: order.status === "paid" && !canShowDownload,
     });
   } catch (error) {
     sendJson(res, 500, { error: error.message || "Order lookup failed." });

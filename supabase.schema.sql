@@ -7,6 +7,7 @@ create table if not exists public.orders (
   amount integer not null,
   currency text not null default 'PHP',
   status text not null default 'pending',
+  access_token_hash text,
   paymongo_checkout_session_id text,
   download_url text,
   paymongo_payload jsonb,

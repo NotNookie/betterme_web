@@ -4,6 +4,12 @@ function getProductId(product) {
   return product.url.split("/").filter(Boolean).pop();
 }
 
+function createAccessToken() {
+  const bytes = new Uint8Array(32);
+  window.crypto.getRandomValues(bytes);
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
 export function CheckoutButton({ product }) {
   const [email, setEmail] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -16,12 +22,14 @@ export function CheckoutButton({ product }) {
     setIsSubmitting(true);
 
     try {
+      const accessToken = createAccessToken();
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productId: getProductId(product),
           email,
+          accessToken,
         }),
       });
       const json = await response.json();
@@ -30,6 +38,7 @@ export function CheckoutButton({ product }) {
         throw new Error(json.error || "Checkout could not be started.");
       }
 
+      window.sessionStorage.setItem(`checkout-access:${json.referenceNumber}`, accessToken);
       window.location.href = json.checkoutUrl;
     } catch (checkoutError) {
       setError(checkoutError.message);
