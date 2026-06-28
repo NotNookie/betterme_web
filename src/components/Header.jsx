@@ -12,7 +12,7 @@ export function Header() {
   return (
     <header className="site-header" id="top">
       <nav className="container nav" aria-label="Main navigation">
-        <a className="brand" href="#top" aria-label="Better Me Digitals home">
+        <a className="brand" href="/" aria-label="Better Me Digitals home">
           <LogoMark />
           <span>{brand.name}</span>
         </a>

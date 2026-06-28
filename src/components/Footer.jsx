@@ -5,7 +5,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-inner">
-        <a className="brand footer-brand" href="#top" aria-label="Better Me Digitals home">
+        <a className="brand footer-brand" href="/" aria-label="Better Me Digitals home">
           <LogoMark />
           <span>{brand.name}</span>
         </a>
