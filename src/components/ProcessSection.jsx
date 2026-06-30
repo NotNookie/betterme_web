@@ -14,7 +14,7 @@ const steps = [
   {
     number: "03",
     title: "Open the digital file",
-    text: "Customers follow the product instructions to download, print, or open the Canva template.",
+    text: "After payment, the success page shows the download button in the same browser.",
   },
 ];
 
@@ -25,7 +25,7 @@ export function ProcessSection() {
         <SectionHeading
           eyebrow="How it works"
           title="A simple digital buying flow"
-          text="The website collects the delivery email, opens PayMongo checkout, and releases the digital product after payment."
+          text="The website opens PayMongo checkout and releases the digital product after payment."
         />
 
         <div className="steps-grid">

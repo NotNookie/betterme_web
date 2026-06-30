@@ -8,7 +8,7 @@ export function ProductGrid({ products }) {
         <SectionHeading
           eyebrow="Digital shop"
           title="Digital products ready for checkout"
-          text="Choose a product, enter your delivery email, and complete payment securely through PayMongo."
+          text="Choose a product, complete payment securely through PayMongo, and open the file from the success page."
         />
 
         <div className="products-grid">

@@ -11,13 +11,10 @@ function createAccessToken() {
 }
 
 export function CheckoutButton({ product }) {
-  const [email, setEmail] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleSubmit(event) {
-    event.preventDefault();
+  async function handleCheckout() {
     setError("");
     setIsSubmitting(true);
 
@@ -28,7 +25,6 @@ export function CheckoutButton({ product }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productId: getProductId(product),
-          email,
           accessToken,
         }),
       });
@@ -46,42 +42,15 @@ export function CheckoutButton({ product }) {
     }
   }
 
-  if (!isOpen) {
-    return (
-      <button className="button button-primary product-button" type="button" onClick={() => setIsOpen(true)}>
-        <span>Buy now</span>
+  return (
+    <div className="checkout-form">
+      <button className="button button-primary product-button" type="button" onClick={handleCheckout} disabled={isSubmitting}>
+        <span>{isSubmitting ? "Opening checkout..." : "Buy now"}</span>
         <span className="button-arrow" aria-hidden="true">
           -&gt;
         </span>
       </button>
-    );
-  }
-
-  return (
-    <form className="checkout-form" onSubmit={handleSubmit}>
-      <label htmlFor={`email-${getProductId(product)}`}>Delivery email</label>
-      <input
-        id={`email-${getProductId(product)}`}
-        name="email"
-        type="email"
-        autoComplete="email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-        placeholder="you@example.com"
-        required
-      />
       {error ? <p className="checkout-error">{error}</p> : null}
-      <div className="checkout-actions">
-        <button className="button button-primary" type="submit" disabled={isSubmitting}>
-          <span>{isSubmitting ? "Opening checkout..." : "Continue to payment"}</span>
-          <span className="button-arrow" aria-hidden="true">
-            -&gt;
-          </span>
-        </button>
-        <button className="checkout-cancel" type="button" onClick={() => setIsOpen(false)} disabled={isSubmitting}>
-          Cancel
-        </button>
-      </div>
-    </form>
+    </div>
   );
 }

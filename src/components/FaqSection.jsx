@@ -4,7 +4,7 @@ const faqs = [
   {
     question: "How do customers receive their order?",
     answer:
-      "After PayMongo confirms payment, customers receive access through the success page and delivery email.",
+      "After PayMongo confirms payment, the download button appears on the success page in the same browser.",
   },
   {
     question: "Do Canva products need an account?",

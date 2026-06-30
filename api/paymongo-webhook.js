@@ -2,7 +2,6 @@ import crypto from "node:crypto";
 import {
   getDeliveryLink,
   readRawBody,
-  sendDeliveryEmail,
   sendJson,
   supabaseRequest,
 } from "./_utils.js";
@@ -113,7 +112,7 @@ export default async function handler(req, res) {
     }
 
     const orders = await supabaseRequest(
-      `orders?reference_number=eq.${encodeURIComponent(referenceNumber)}&select=reference_number,product_id,product_title,customer_email,status,delivery_email_sent_at`
+      `orders?reference_number=eq.${encodeURIComponent(referenceNumber)}&select=reference_number,product_id,status`
     );
     const order = orders?.[0];
 
@@ -134,45 +133,6 @@ export default async function handler(req, res) {
         paymongo_payload: payload,
       }),
     });
-
-    if (!order.delivery_email_sent_at) {
-      try {
-        const emailResult = await sendDeliveryEmail({
-          customerEmail: order.customer_email,
-          productTitle: order.product_title,
-          referenceNumber,
-          downloadUrl,
-        });
-
-        if (emailResult.skipped) {
-          await supabaseRequest(`orders?reference_number=eq.${encodeURIComponent(referenceNumber)}`, {
-            method: "PATCH",
-            headers: { Prefer: "return=minimal" },
-            body: JSON.stringify({
-              delivery_email_error: emailResult.reason || "Delivery email skipped.",
-            }),
-          });
-        } else {
-          await supabaseRequest(`orders?reference_number=eq.${encodeURIComponent(referenceNumber)}`, {
-            method: "PATCH",
-            headers: { Prefer: "return=minimal" },
-            body: JSON.stringify({
-              delivery_email_sent_at: new Date().toISOString(),
-              delivery_email_provider_id: emailResult.id,
-              delivery_email_error: null,
-            }),
-          });
-        }
-      } catch (error) {
-        await supabaseRequest(`orders?reference_number=eq.${encodeURIComponent(referenceNumber)}`, {
-          method: "PATCH",
-          headers: { Prefer: "return=minimal" },
-          body: JSON.stringify({
-            delivery_email_error: error.message || "Delivery email failed.",
-          }),
-        });
-      }
-    }
 
     sendJson(res, 200, { received: true });
   } catch (error) {

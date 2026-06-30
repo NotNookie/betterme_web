@@ -6,11 +6,12 @@ import {
   getProductId,
   getSiteUrl,
   hashAccessToken,
-  isValidEmail,
   readJson,
   sendJson,
   supabaseRequest,
 } from "./_utils.js";
+
+const SUCCESS_PAGE_DELIVERY_EMAIL = "success-page-only@betterme.local";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -19,17 +20,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { productId, email, accessToken } = await readJson(req);
-    const customerEmail = String(email || "").trim().toLowerCase();
+    const { productId, accessToken } = await readJson(req);
     const product = findProduct(productId);
 
     if (!product) {
       sendJson(res, 404, { error: "Product not found." });
-      return;
-    }
-
-    if (!isValidEmail(customerEmail)) {
-      sendJson(res, 400, { error: "Enter a valid email address." });
       return;
     }
 
@@ -50,7 +45,7 @@ export default async function handler(req, res) {
         reference_number: referenceNumber,
         product_id: getProductId(product),
         product_title: product.title,
-        customer_email: customerEmail,
+        customer_email: SUCCESS_PAGE_DELIVERY_EMAIL,
         amount,
         currency: "PHP",
         status: "pending",
