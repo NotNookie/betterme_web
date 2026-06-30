@@ -14,8 +14,23 @@ function getProductFromPath(pathname) {
   return products.find((product) => getProductId(product) === productId);
 }
 
+function getProductHighlights(product) {
+  const category = product.category.toLowerCase();
+
+  if (category.includes("kids") || category.includes("coloring")) {
+    return ["Printable activity pages", "Designed for playful learning", "Ready after payment"];
+  }
+
+  if (category.includes("canva") || category.includes("business") || category.includes("planner")) {
+    return ["Editable Canva access", "Digital template format", "Ready after payment"];
+  }
+
+  return ["Digital product access", "No shipping needed", "Ready after payment"];
+}
+
 export function ProductDetail() {
   const product = getProductFromPath(window.location.pathname);
+  const highlights = product ? getProductHighlights(product) : [];
 
   return (
     <>
@@ -25,21 +40,44 @@ export function ProductDetail() {
           <div className="container">
             {product ? (
               <div className="product-detail">
-                <div className="product-detail-image">
-                  <img src={product.image} alt={`${product.title} product preview`} />
+                <div className="product-detail-media">
+                  <div className="product-detail-image">
+                    <img src={product.image} alt={`${product.title} product preview`} />
+                  </div>
+                  <div className="product-detail-note">
+                    <span>Digital file</span>
+                    <span>No physical shipping</span>
+                  </div>
                 </div>
 
                 <div className="product-detail-content">
                   <ButtonLink href="/#products" variant="text" className="product-detail-back">
                     Back to products
                   </ButtonLink>
-                  <p className="product-eyebrow">{product.category}</p>
-                  <h1>{product.title}</h1>
-                  <p className="product-detail-price">{product.price}</p>
+                  <div>
+                    <p className="product-eyebrow">{product.category}</p>
+                    <h1>{product.title}</h1>
+                  </div>
                   <p className="product-detail-description">{product.description}</p>
 
-                  <div className="product-detail-checkout">
+                  <div className="product-detail-highlights" aria-label="Product highlights">
+                    {highlights.map((highlight) => (
+                      <span key={highlight}>{highlight}</span>
+                    ))}
+                  </div>
+
+                  <div className="product-detail-purchase">
+                    <div className="product-detail-purchase-top">
+                      <div>
+                        <span>Price</span>
+                        <p>{product.price}</p>
+                      </div>
+                      <strong>PayMongo checkout</strong>
+                    </div>
                     <CheckoutButton product={product} />
+                    <p className="product-detail-delivery">
+                      After payment, the download button appears on your order page in this browser.
+                    </p>
                   </div>
                 </div>
               </div>
