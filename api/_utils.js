@@ -138,12 +138,29 @@ export function getDeliveryLink(productId) {
   }
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 export async function sendDeliveryEmail({ customerEmail, productTitle, referenceNumber, downloadUrl }) {
-  if (!process.env.RESEND_API_KEY || !process.env.FROM_EMAIL || !downloadUrl) {
-    return;
+  if (!downloadUrl) {
+    return { skipped: true, reason: "No delivery link is configured for this product." };
   }
 
-  await fetch("https://api.resend.com/emails", {
+  if (!process.env.RESEND_API_KEY || !process.env.FROM_EMAIL) {
+    return { skipped: true, reason: "Resend email environment variables are not configured." };
+  }
+
+  const safeProductTitle = escapeHtml(productTitle);
+  const safeReferenceNumber = escapeHtml(referenceNumber);
+  const safeDownloadUrl = escapeHtml(downloadUrl);
+
+  const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
@@ -153,12 +170,47 @@ export async function sendDeliveryEmail({ customerEmail, productTitle, reference
       from: process.env.FROM_EMAIL,
       to: customerEmail,
       subject: `Your Better Me Digitals order ${referenceNumber}`,
+      text: [
+        "Thank you for your purchase.",
+        "",
+        `Your ${productTitle} download is ready:`,
+        downloadUrl,
+        "",
+        `Order reference: ${referenceNumber}`,
+      ].join("\n"),
       html: `
-        <p>Thank you for your purchase.</p>
-        <p>Your ${productTitle} download is ready:</p>
-        <p><a href="${downloadUrl}">Open your digital product</a></p>
-        <p>Order reference: ${referenceNumber}</p>
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #12352a;">
+          <p>Thank you for your purchase.</p>
+          <p>Your <strong>${safeProductTitle}</strong> download is ready:</p>
+          <p>
+            <a href="${safeDownloadUrl}" style="display: inline-block; padding: 12px 18px; background: #0b5c34; color: #ffffff; text-decoration: none; border-radius: 6px;">
+              Open your digital product
+            </a>
+          </p>
+          <p>If the button does not work, copy and paste this link into your browser:</p>
+          <p><a href="${safeDownloadUrl}">${safeDownloadUrl}</a></p>
+          <p>Order reference: ${safeReferenceNumber}</p>
+        </div>
       `,
     }),
   });
+
+  const responseText = await response.text();
+  let data = null;
+
+  try {
+    data = responseText ? JSON.parse(responseText) : null;
+  } catch {
+    data = { message: responseText };
+  }
+
+  if (!response.ok) {
+    const message = data?.message || data?.error || response.statusText;
+    const error = new Error(message);
+    error.status = response.status;
+    error.data = data;
+    throw error;
+  }
+
+  return { skipped: false, id: data?.id || null };
 }
