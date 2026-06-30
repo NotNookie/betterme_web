@@ -728,7 +728,17 @@ a.product-image-wrap:hover {
 }
 
 .product-detail-back {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
+  color: var(--forest);
+  font-weight: 900;
+}
+
+.product-detail-back:hover {
+  color: var(--leaf);
 }
 
 .product-detail-content h1 {

@@ -31,6 +31,16 @@ function getProductHighlights(product) {
 export function ProductDetail() {
   const product = getProductFromPath(window.location.pathname);
   const highlights = product ? getProductHighlights(product) : [];
+  const handleBackToProducts = (event) => {
+    const savedScrollY = window.sessionStorage.getItem("products-scroll-y");
+
+    if (!savedScrollY) {
+      return;
+    }
+
+    event.preventDefault();
+    window.location.href = "/?restore=products";
+  };
 
   return (
     <>
@@ -41,6 +51,14 @@ export function ProductDetail() {
             {product ? (
               <div className="product-detail">
                 <div className="product-detail-media">
+                  <a
+                    href="/#products"
+                    className="product-detail-back"
+                    onClick={handleBackToProducts}
+                  >
+                    <span aria-hidden="true">&lt;-</span>
+                    Back to products
+                  </a>
                   <div className="product-detail-image">
                     <img src={product.image} alt={`${product.title} product preview`} />
                   </div>
@@ -51,9 +69,6 @@ export function ProductDetail() {
                 </div>
 
                 <div className="product-detail-content">
-                  <ButtonLink href="/#products" variant="text" className="product-detail-back">
-                    Back to products
-                  </ButtonLink>
                   <div>
                     <p className="product-eyebrow">{product.category}</p>
                     <h1>{product.title}</h1>

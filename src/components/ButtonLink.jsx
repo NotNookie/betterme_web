@@ -1,10 +1,11 @@
-export function ButtonLink({ children, href, variant = "primary", className = "" }) {
+export function ButtonLink({ children, href, variant = "primary", className = "", onClick }) {
   const isExternal = href?.startsWith("http");
 
   return (
     <a
       className={`button button-${variant} ${className}`.trim()}
       href={href}
+      onClick={onClick}
       rel={isExternal ? "noreferrer" : undefined}
       target={isExternal ? "_blank" : undefined}
     >
