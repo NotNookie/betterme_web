@@ -5,6 +5,7 @@ import { Footer } from "./components/Footer.jsx";
 import { Header } from "./components/Header.jsx";
 import { Hero } from "./components/Hero.jsx";
 import { CheckoutSuccess } from "./components/CheckoutSuccess.jsx";
+import { ProductDetail } from "./components/ProductDetail.jsx";
 import { ProductGrid } from "./components/ProductGrid.jsx";
 import { ProcessSection } from "./components/ProcessSection.jsx";
 import { ShopBanner } from "./components/ShopBanner.jsx";
@@ -13,6 +14,10 @@ import { products } from "./data/products.js";
 export default function App() {
   if (window.location.pathname === "/checkout/success") {
     return <CheckoutSuccess />;
+  }
+
+  if (window.location.pathname.startsWith("/products/")) {
+    return <ProductDetail />;
   }
 
   return (

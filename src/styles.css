@@ -540,6 +540,17 @@ h3 {
   object-fit: cover;
 }
 
+a.product-image-wrap {
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+a.product-image-wrap:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 38px rgba(8, 45, 29, 0.14);
+}
+
 .product-meta {
   display: flex;
   align-items: center;
@@ -577,6 +588,10 @@ h3 {
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+}
+
+.product-card h3 a:hover {
+  color: var(--forest);
 }
 
 .product-card .button {
@@ -652,6 +667,77 @@ h3 {
 
 .checkout-status .button {
   margin-top: 14px;
+}
+
+.product-detail-section {
+  background: var(--cream);
+}
+
+.product-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.78fr);
+  gap: 42px;
+  align-items: start;
+}
+
+.product-detail-image {
+  overflow: hidden;
+  border: 1px solid rgba(13, 79, 39, 0.16);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(216, 242, 225, 0.62)),
+    var(--mint);
+  box-shadow: var(--shadow);
+  aspect-ratio: 1 / 0.72;
+}
+
+.product-detail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-detail-content {
+  display: grid;
+  gap: 16px;
+}
+
+.product-detail-back {
+  margin-bottom: 8px;
+}
+
+.product-detail-content h1 {
+  margin: 0;
+  color: var(--deep);
+  font-size: clamp(2.2rem, 5vw, 4.6rem);
+  line-height: 0.98;
+}
+
+.product-detail-price {
+  margin: 0;
+  color: var(--forest);
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.product-detail-description {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.product-detail-checkout {
+  display: grid;
+  max-width: 420px;
+  margin-top: 10px;
+}
+
+.product-detail-empty {
+  max-width: 680px;
+}
+
+.product-detail-empty h1 {
+  margin: 10px 0 16px;
 }
 
 .process-section {
@@ -809,6 +895,7 @@ h3 {
   }
 
   .hero-grid,
+  .product-detail,
   .contact-grid {
     grid-template-columns: 1fr;
   }
@@ -825,6 +912,14 @@ h3 {
 
   .product-card {
     min-height: auto;
+  }
+
+  .product-detail-image {
+    aspect-ratio: 1 / 0.78;
+  }
+
+  .product-detail-checkout {
+    max-width: none;
   }
 
   .shop-banner-inner,

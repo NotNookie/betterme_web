@@ -1,17 +1,25 @@
 import { CheckoutButton } from "./CheckoutButton.jsx";
 
+function getProductId(product) {
+  return product.url.split("/").filter(Boolean).pop();
+}
+
 export function ProductCard({ product }) {
+  const productHref = `/products/${getProductId(product)}`;
+
   return (
     <article className="product-card">
-      <div className="product-image-wrap">
+      <a className="product-image-wrap" href={productHref} aria-label={`View ${product.title}`}>
         <img src={product.image} alt={`${product.title} product preview`} loading="lazy" />
-      </div>
+      </a>
 
       <div className="product-meta">
         <p className="product-eyebrow">{product.category}</p>
         <p className="product-price">{product.price}</p>
       </div>
-      <h3>{product.title}</h3>
+      <h3>
+        <a href={productHref}>{product.title}</a>
+      </h3>
       <p>{product.description}</p>
       <CheckoutButton product={product} />
     </article>

@@ -3,9 +3,9 @@ import { ButtonLink } from "./ButtonLink.jsx";
 import { LogoMark } from "./LogoMark.jsx";
 
 const navItems = [
-  { label: "Products", href: "#products" },
-  { label: "How it works", href: "#how-it-works" },
-  { label: "Contact", href: "#contact" },
+  { label: "Products", href: "/#products" },
+  { label: "How it works", href: "/#how-it-works" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export function Header() {
@@ -25,7 +25,7 @@ export function Header() {
           ))}
         </div>
 
-        <ButtonLink href={brand.shopUrl} variant="compact">
+        <ButtonLink href="/#products" variant="compact">
           Shop
         </ButtonLink>
       </nav>

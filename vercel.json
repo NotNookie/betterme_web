@@ -1,3 +1,6 @@
 {
-  "rewrites": [{ "source": "/checkout/:path*", "destination": "/" }]
+  "rewrites": [
+    { "source": "/checkout/:path*", "destination": "/" },
+    { "source": "/products/:path*", "destination": "/" }
+  ]
 }
