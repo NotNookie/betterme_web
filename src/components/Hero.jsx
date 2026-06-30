@@ -15,10 +15,7 @@ export function Hero() {
           </p>
 
           <div className="hero-actions">
-            <ButtonLink href="#products">Avail now</ButtonLink>
-            <ButtonLink href="#products" variant="secondary">
-              See products
-            </ButtonLink>
+            <ButtonLink href="#products">See products</ButtonLink>
           </div>
         </div>
 
