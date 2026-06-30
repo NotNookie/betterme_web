@@ -76,7 +76,7 @@ export function CheckoutSuccess() {
                 </p>
                 {order.downloadUrl ? (
                   <a className="button button-primary" href={order.downloadUrl} target="_blank" rel="noreferrer">
-                    <span>Open download</span>
+                    <span>Click to download / view</span>
                     <span className="button-arrow" aria-hidden="true">
                       -&gt;
                     </span>
