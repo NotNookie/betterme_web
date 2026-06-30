@@ -1,4 +1,3 @@
-import { Analytics } from "@vercel/analytics/react";
 import { useEffect } from "react";
 import { ContactSection } from "./components/ContactSection.jsx";
 import { FaqSection } from "./components/FaqSection.jsx";
@@ -48,7 +47,6 @@ export default function App() {
         <ContactSection />
       </main>
       <Footer />
-      <Analytics />
     </>
   );
 }

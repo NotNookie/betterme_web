@@ -1,5 +1,4 @@
 import { brand } from "../data/brand.js";
-import { ButtonLink } from "./ButtonLink.jsx";
 import { SectionHeading } from "./SectionHeading.jsx";
 
 const contacts = [
@@ -48,10 +47,6 @@ export function ContactSection() {
               <span className="contact-value">{item.value}</span>
             </a>
           ))}
-
-          <ButtonLink href={brand.shopUrl} variant="primary" className="contact-button">
-            Shop on Raket
-          </ButtonLink>
         </div>
       </div>
     </section>

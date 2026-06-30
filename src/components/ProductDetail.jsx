@@ -1,4 +1,3 @@
-import { Analytics } from "@vercel/analytics/react";
 import { products } from "../data/products.js";
 import { ButtonLink } from "./ButtonLink.jsx";
 import { CheckoutButton } from "./CheckoutButton.jsx";
@@ -108,7 +107,6 @@ export function ProductDetail() {
         </section>
       </main>
       <Footer />
-      <Analytics />
     </>
   );
 }

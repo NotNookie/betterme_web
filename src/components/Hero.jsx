@@ -1,4 +1,3 @@
-import { brand } from "../data/brand.js";
 import { ButtonLink } from "./ButtonLink.jsx";
 import { HeroArtwork } from "./HeroArtwork.jsx";
 
@@ -16,7 +15,7 @@ export function Hero() {
           </p>
 
           <div className="hero-actions">
-            <ButtonLink href={brand.shopUrl}>Avail now</ButtonLink>
+            <ButtonLink href="#products">Avail now</ButtonLink>
             <ButtonLink href="#products" variant="secondary">
               See products
             </ButtonLink>
