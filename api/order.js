@@ -1,8 +1,18 @@
-import { hashAccessToken, sendJson, supabaseRequest } from "./_utils.js";
+import { checkRateLimit, hashAccessToken, sendJson, supabaseRequest } from "./_utils.js";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     sendJson(res, 405, { error: "Method not allowed" });
+    return;
+  }
+
+  const ip =
+    req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    req.socket?.remoteAddress ||
+    "unknown";
+
+  if (!checkRateLimit(`order:${ip}`, 30, 60_000)) {
+    sendJson(res, 429, { error: "Too many requests. Please try again later." });
     return;
   }
 

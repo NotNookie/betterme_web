@@ -1,8 +1,5 @@
 import { useState } from "react";
-
-function getProductId(product) {
-  return product.url.split("/").filter(Boolean).pop();
-}
+import { getProductId } from "../utils.js";
 
 function createAccessToken() {
   const bytes = new Uint8Array(32);
@@ -32,6 +29,10 @@ export function CheckoutButton({ product }) {
 
       if (!response.ok) {
         throw new Error(json.error || "Checkout could not be started.");
+      }
+
+      if (!json.checkoutUrl || !json.referenceNumber) {
+        throw new Error("Invalid response from checkout. Please try again.");
       }
 
       window.sessionStorage.setItem(`checkout-access:${json.referenceNumber}`, accessToken);

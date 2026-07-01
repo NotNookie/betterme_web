@@ -1,4 +1,5 @@
 import {
+  checkRateLimit,
   createReferenceNumber,
   findProduct,
   getPaymentMethodTypes,
@@ -13,9 +14,26 @@ import {
 
 const SUCCESS_PAGE_DELIVERY_EMAIL = "success-page-only@betterme.local";
 
+async function deleteOrder(referenceNumber) {
+  await supabaseRequest(
+    `orders?reference_number=eq.${encodeURIComponent(referenceNumber)}`,
+    { method: "DELETE", headers: { Prefer: "return=minimal" } }
+  ).catch(() => {});
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     sendJson(res, 405, { error: "Method not allowed" });
+    return;
+  }
+
+  const ip =
+    req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    req.socket?.remoteAddress ||
+    "unknown";
+
+  if (!checkRateLimit(`checkout:${ip}`, 10, 60_000)) {
+    sendJson(res, 429, { error: "Too many requests. Please try again later." });
     return;
   }
 
@@ -25,6 +43,11 @@ export default async function handler(req, res) {
 
     if (!product) {
       sendJson(res, 404, { error: "Product not found." });
+      return;
+    }
+
+    if (!accessToken || typeof accessToken !== "string" || accessToken.length < 32) {
+      sendJson(res, 400, { error: "Invalid access token." });
       return;
     }
 
@@ -53,40 +76,50 @@ export default async function handler(req, res) {
       }),
     });
 
-    const paymongoResponse = await fetch("https://api.paymongo.com/v2/checkout_sessions", {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${process.env.PAYMONGO_SECRET_KEY}:`).toString("base64")}`,
-        "Content-Type": "application/json",
-        "Idempotency-Key": referenceNumber,
-      },
-      body: JSON.stringify({
-        data: {
-          attributes: {
-            line_items: [
-              {
-                name: product.title,
-                amount,
-                currency: "PHP",
-                quantity: 1,
-              },
-            ],
-            payment_method_types: getPaymentMethodTypes(),
-            success_url: `${siteUrl}/checkout/success?reference=${encodeURIComponent(referenceNumber)}`,
-            cancel_url: `${siteUrl}/#products`,
-            reference_number: referenceNumber,
-            metadata: {
+    let paymongoResponse;
+    let paymongoJson;
+
+    try {
+      paymongoResponse = await fetch("https://api.paymongo.com/v2/checkout_sessions", {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${process.env.PAYMONGO_SECRET_KEY}:`).toString("base64")}`,
+          "Content-Type": "application/json",
+          "Idempotency-Key": referenceNumber,
+        },
+        body: JSON.stringify({
+          data: {
+            attributes: {
+              line_items: [
+                {
+                  name: product.title,
+                  amount,
+                  currency: "PHP",
+                  quantity: 1,
+                },
+              ],
+              payment_method_types: getPaymentMethodTypes(),
+              success_url: `${siteUrl}/checkout/success?reference=${encodeURIComponent(referenceNumber)}`,
+              cancel_url: `${siteUrl}/#products`,
               reference_number: referenceNumber,
-              product_id: getProductId(product),
+              metadata: {
+                reference_number: referenceNumber,
+                product_id: getProductId(product),
+              },
             },
           },
-        },
-      }),
-    });
+        }),
+      });
 
-    const paymongoJson = await paymongoResponse.json();
+      paymongoJson = await paymongoResponse.json();
+    } catch (paymongoError) {
+      // PayMongo call failed — remove the orphaned pending order.
+      await deleteOrder(referenceNumber);
+      throw paymongoError;
+    }
 
     if (!paymongoResponse.ok) {
+      await deleteOrder(referenceNumber);
       sendJson(res, paymongoResponse.status, {
         error: paymongoJson?.errors?.[0]?.detail || "PayMongo checkout could not be created.",
       });
@@ -95,6 +128,12 @@ export default async function handler(req, res) {
 
     const checkoutUrl = paymongoJson.data?.attributes?.checkout_url;
     const checkoutSessionId = paymongoJson.data?.id;
+
+    if (!checkoutUrl || !checkoutSessionId) {
+      await deleteOrder(referenceNumber);
+      sendJson(res, 500, { error: "PayMongo did not return a valid checkout session." });
+      return;
+    }
 
     await supabaseRequest(`orders?reference_number=eq.${encodeURIComponent(referenceNumber)}`, {
       method: "PATCH",

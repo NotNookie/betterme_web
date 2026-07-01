@@ -107,6 +107,10 @@ export default async function handler(req, res) {
       paymentAttributes.metadata?.reference_number;
 
     if (!referenceNumber) {
+      console.error(
+        "[paymongo-webhook] No reference_number found in event.",
+        JSON.stringify({ eventId, eventType })
+      );
       sendJson(res, 200, { received: true });
       return;
     }
@@ -116,12 +120,26 @@ export default async function handler(req, res) {
     );
     const order = orders?.[0];
 
-    if (!order || order.status === "paid") {
+    if (!order) {
+      console.error(
+        `[paymongo-webhook] No order found for reference: ${referenceNumber}`
+      );
+      sendJson(res, 200, { received: true });
+      return;
+    }
+
+    if (order.status === "paid") {
       sendJson(res, 200, { received: true });
       return;
     }
 
     const downloadUrl = getDeliveryLink(order.product_id);
+
+    if (!downloadUrl) {
+      console.error(
+        `[paymongo-webhook] No download URL resolved for product: ${order.product_id} (reference: ${referenceNumber}). Order will be marked paid but download will not be available.`
+      );
+    }
 
     await supabaseRequest(`orders?reference_number=eq.${encodeURIComponent(referenceNumber)}`, {
       method: "PATCH",
@@ -136,6 +154,7 @@ export default async function handler(req, res) {
 
     sendJson(res, 200, { received: true });
   } catch (error) {
+    console.error("[paymongo-webhook] Unhandled error:", error.message);
     sendJson(res, 500, { error: error.message || "Webhook failed." });
   }
 }

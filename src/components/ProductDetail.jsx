@@ -1,12 +1,9 @@
 import { products } from "../data/products.js";
+import { getProductId } from "../utils.js";
 import { ButtonLink } from "./ButtonLink.jsx";
 import { CheckoutButton } from "./CheckoutButton.jsx";
 import { Footer } from "./Footer.jsx";
 import { Header } from "./Header.jsx";
-
-function getProductId(product) {
-  return product.url.split("/").filter(Boolean).pop();
-}
 
 function getProductFromPath(pathname) {
   const productId = decodeURIComponent(pathname.replace(/^\/products\//, "").replace(/\/$/, ""));

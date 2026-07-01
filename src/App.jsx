@@ -5,11 +5,15 @@ import { Footer } from "./components/Footer.jsx";
 import { Header } from "./components/Header.jsx";
 import { Hero } from "./components/Hero.jsx";
 import { CheckoutSuccess } from "./components/CheckoutSuccess.jsx";
+import { OrderLookup } from "./components/OrderLookup.jsx";
+import { PolicyPage } from "./components/PolicyPage.jsx";
 import { ProductDetail } from "./components/ProductDetail.jsx";
 import { ProductGrid } from "./components/ProductGrid.jsx";
 import { ProcessSection } from "./components/ProcessSection.jsx";
 import { ShopBanner } from "./components/ShopBanner.jsx";
 import { products } from "./data/products.js";
+
+const POLICY_PATHS = ["/policies/refund", "/policies/terms", "/policies/privacy"];
 
 export default function App() {
   useEffect(() => {
@@ -27,11 +31,21 @@ export default function App() {
     });
   }, []);
 
-  if (window.location.pathname === "/checkout/success") {
+  const { pathname } = window.location;
+
+  if (pathname === "/checkout/success") {
     return <CheckoutSuccess />;
   }
 
-  if (window.location.pathname.startsWith("/products/")) {
+  if (pathname === "/order-lookup") {
+    return <OrderLookup />;
+  }
+
+  if (POLICY_PATHS.includes(pathname)) {
+    return <PolicyPage />;
+  }
+
+  if (pathname.startsWith("/products/")) {
     return <ProductDetail />;
   }
 

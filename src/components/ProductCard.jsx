@@ -1,8 +1,5 @@
 import { CheckoutButton } from "./CheckoutButton.jsx";
-
-function getProductId(product) {
-  return product.url.split("/").filter(Boolean).pop();
-}
+import { getProductId } from "../utils.js";
 
 export function ProductCard({ product }) {
   const productHref = `/products/${getProductId(product)}`;

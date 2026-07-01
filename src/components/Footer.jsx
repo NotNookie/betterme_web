@@ -11,6 +11,12 @@ export function Footer() {
         </a>
         <p>Digital coloring books, Canva links, and printable calm for everyday creativity.</p>
       </div>
+      <div className="container footer-links">
+        <a href="/order-lookup">Look up an order</a>
+        <a href="/policies/refund">Refund Policy</a>
+        <a href="/policies/terms">Terms of Service</a>
+        <a href="/policies/privacy">Privacy Policy</a>
+      </div>
     </footer>
   );
 }

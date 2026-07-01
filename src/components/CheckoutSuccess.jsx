@@ -41,7 +41,7 @@ export function CheckoutSuccess() {
 
         setOrder(json);
 
-        if (json.status !== "paid" && attempts < 8) {
+        if (json.status !== "paid" && attempts < 24) {
           window.setTimeout(loadOrder, 2500);
         }
       } catch (orderError) {
@@ -66,13 +66,24 @@ export function CheckoutSuccess() {
           <div className="container checkout-status">
             <p className="eyebrow">Checkout</p>
             <h1>Thank you for your order.</h1>
+
+            {reference && (
+              <div className="checkout-notice">
+                <p className="checkout-notice-label">Your order reference</p>
+                <p className="checkout-notice-ref">{reference}</p>
+                <p className="checkout-notice-hint">
+                  Screenshot or write this down. You will need it if you contact support or look up your order from another device.
+                </p>
+              </div>
+            )}
+
             {error ? <p className="checkout-error">{error}</p> : null}
             {!error && !order ? <p>Checking payment status...</p> : null}
+
             {order ? (
               <>
                 <p>
-                  Order <strong>{order.referenceNumber}</strong> for <strong>{order.productTitle}</strong> is{" "}
-                  <strong>{order.status}</strong>.
+                  Order for <strong>{order.productTitle}</strong> is <strong>{order.status}</strong>.
                 </p>
                 {order.downloadUrl ? (
                   <a className="button button-primary" href={order.downloadUrl} target="_blank" rel="noreferrer">
@@ -82,11 +93,24 @@ export function CheckoutSuccess() {
                     </span>
                   </a>
                 ) : (
-                  <p>
-                    {order.needsOriginalBrowser
-                      ? "For security, open this order from the browser used at checkout to view the download."
-                      : "Your download link will appear here after PayMongo confirms payment."}
-                  </p>
+                  <>
+                    <p>
+                      {order.needsOriginalBrowser
+                        ? "For security, open this order from the browser you used at checkout to view the download."
+                        : "Your download link will appear here after PayMongo confirms payment."}
+                    </p>
+                    {order.needsOriginalBrowser && (
+                      <a
+                        className="button button-secondary"
+                        href={`/order-lookup?reference=${encodeURIComponent(reference)}`}
+                      >
+                        <span>Look up this order</span>
+                        <span className="button-arrow" aria-hidden="true">
+                          -&gt;
+                        </span>
+                      </a>
+                    )}
+                  </>
                 )}
               </>
             ) : null}

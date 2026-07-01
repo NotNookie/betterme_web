@@ -588,6 +588,7 @@ a.product-image-wrap:hover {
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 
 .product-card h3 a:hover {
@@ -965,6 +966,216 @@ a.product-image-wrap:hover {
   margin: 0;
   color: rgba(255, 255, 255, 0.76);
   text-align: right;
+}
+
+/* ── Checkout notice (save reference) ── */
+
+.checkout-notice {
+  margin: 4px 0 24px;
+  border: 1px solid rgba(13, 79, 39, 0.2);
+  border-radius: var(--radius);
+  background: rgba(216, 242, 225, 0.52);
+  padding: 18px 22px;
+}
+
+.checkout-notice-label {
+  margin: 0 0 6px;
+  color: var(--leaf);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.checkout-notice-ref {
+  margin: 0 0 10px;
+  color: var(--deep);
+  font-size: 1.1rem;
+  font-weight: 900;
+  word-break: break-all;
+}
+
+.checkout-notice-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+/* ── Order lookup page ── */
+
+.lookup-intro {
+  margin: 0 0 28px;
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 56ch;
+}
+
+.lookup-form {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 24px;
+  max-width: 580px;
+}
+
+.lookup-label {
+  color: var(--deep);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.lookup-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.lookup-input {
+  flex: 1;
+  min-height: 48px;
+  border: 1px solid rgba(13, 79, 39, 0.2);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--deep);
+  padding: 0 14px;
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.lookup-input:focus {
+  border-color: var(--forest);
+  outline: 3px solid rgba(13, 79, 39, 0.12);
+}
+
+.lookup-result {
+  display: grid;
+  gap: 0;
+  margin-top: 8px;
+  max-width: 580px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+  overflow: hidden;
+}
+
+.lookup-result-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+  padding: 14px 20px;
+  font-size: 0.92rem;
+}
+
+.lookup-result-row span {
+  color: var(--muted);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.lookup-result-row strong {
+  color: var(--deep);
+  text-align: right;
+  word-break: break-all;
+}
+
+.lookup-status-paid {
+  color: var(--leaf) !important;
+}
+
+.lookup-recovery {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+
+.lookup-recovery p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.lookup-contact {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.lookup-pending-note {
+  margin: 0;
+  padding: 20px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.lookup-email {
+  color: var(--forest);
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+/* ── Policy pages ── */
+
+.policy-section {
+  min-height: 60vh;
+}
+
+.policy-content {
+  max-width: 720px;
+}
+
+.policy-content h1 {
+  margin: 10px 0 36px;
+  font-size: clamp(2.3rem, 6vw, 4.8rem);
+}
+
+.policy-section-block {
+  border-top: 1px solid var(--line);
+  padding: 24px 0;
+}
+
+.policy-section-block h2 {
+  margin: 0 0 10px;
+  color: var(--deep);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.policy-section-block p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.policy-link {
+  color: var(--forest);
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+/* ── Footer links ── */
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 16px;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.82rem;
+  font-weight: 700;
+  transition: color 160ms ease;
+}
+
+.footer-links a:hover {
+  color: rgba(255, 255, 255, 0.92);
 }
 
 @media (max-width: 900px) {
