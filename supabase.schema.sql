@@ -3,7 +3,7 @@ create table if not exists public.orders (
   reference_number text not null unique,
   product_id text not null,
   product_title text not null,
-  customer_email text not null,
+  customer_email text,
   amount integer not null,
   currency text not null default 'PHP',
   status text not null default 'pending',

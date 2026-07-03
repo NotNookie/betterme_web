@@ -12,8 +12,6 @@ import {
   supabaseRequest,
 } from "./_utils.js";
 
-const SUCCESS_PAGE_DELIVERY_EMAIL = "success-page-only@betterme.local";
-
 async function deleteOrder(referenceNumber) {
   await supabaseRequest(
     `orders?reference_number=eq.${encodeURIComponent(referenceNumber)}`,
@@ -68,7 +66,6 @@ export default async function handler(req, res) {
         reference_number: referenceNumber,
         product_id: getProductId(product),
         product_title: product.title,
-        customer_email: SUCCESS_PAGE_DELIVERY_EMAIL,
         amount,
         currency: "PHP",
         status: "pending",

@@ -49,6 +49,26 @@ export default function App() {
     return <ProductDetail />;
   }
 
+  if (pathname !== "/") {
+    return (
+      <>
+        <Header />
+        <main>
+          <section className="section">
+            <div className="container" style={{ padding: "4rem 0", textAlign: "center" }}>
+              <p className="eyebrow">404</p>
+              <h1>Page not found</h1>
+              <p style={{ marginTop: "1rem" }}>
+                <a href="/" className="policy-link">Go back home</a>
+              </p>
+            </div>
+          </section>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <Header />
