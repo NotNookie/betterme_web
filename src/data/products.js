@@ -1,5 +1,13 @@
 export const products = [
   {
+    title: "Test Product (₱1)",
+    price: "PHP 1",
+    category: "Test",
+    description: "Internal test product. Do not purchase.",
+    image: "https://raketcontent.com/small_THUMBNAILS_73d3458f3c.png",
+    url: "https://www.raket.ph/betterme/products/test-product",
+  },
+  {
     title: "Mood Tracker",
     price: "PHP 139",
     category: "Planner",
